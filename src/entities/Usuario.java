@@ -1,6 +1,9 @@
 package entities;
 
-import java.util.Locale;
+import entities.Formulario;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Usuario {
 
@@ -8,6 +11,8 @@ public class Usuario {
     private String email;
     private int idade;
     private double altura;
+
+    private List<Formulario> novoFormulario = new ArrayList<>();
 
     public Usuario(String nome, String email, int idade, double altura) {
         this.nome = nome;
@@ -50,6 +55,11 @@ public class Usuario {
 
     public void exibirInformacoes(){
         System.out.println(getNome() + "\n" + getEmail() + "\n" + getIdade() + "\n" + getAltura());
+    }
+
+    @Override
+    public String toString() {
+        return nome + "\n" + email + "\n" + idade + "\n" + altura;
     }
 
 }

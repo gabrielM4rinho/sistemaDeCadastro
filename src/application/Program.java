@@ -16,24 +16,11 @@ public class Program {
 
         Formulario form = new Formulario();
 
-        List<Usuario> user = new ArrayList<>();
-
         form.lerFormulario();
 
-        System.out.println("Por gentileza, responde as perguntas na mesma ordem");
-        System.out.print("1 -> ");
-        String nome = sc.nextLine();
-        System.out.print("2 -> ");
-        String email = sc.nextLine();
-        System.out.print("3 -> ");
-        int idade = sc.nextInt();
-        System.out.print("4 -> ");
-        double altura = sc.nextDouble();
-
-        user.add(new Usuario(nome, email, idade, altura));
-
-        for (Usuario usuario : user){
-            usuario.exibirInformacoes();
-        }
+        System.out.println("\nCadastrar novo usuario: ");
+        Usuario user = form.cadastrarUsuario();
+        System.out.println(user);
+        form.novoFormulario(user);
     }
 }
