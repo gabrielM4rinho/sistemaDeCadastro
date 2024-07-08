@@ -17,10 +17,52 @@ public class Program {
         Formulario form = new Formulario();
 
         form.lerFormulario();
+        form.atualizarIdAtual();
 
-        System.out.println("\nCadastrar novo usuario: ");
-        Usuario user = form.cadastrarUsuario();
-        System.out.println(user);
-        form.novoFormulario(user);
+        int selectMenu;
+        String cont;
+
+        do {
+
+            System.out.println("\n=================");
+            System.out.println("\nMENU");
+            System.out.print("1 - Cadastrar o usuário\n" +
+                    "2 - Listar todos usuários cadastrados\n" +
+                    "3 - Cadastrar nova pergunta no formulário\n" +
+                    "4 - Deletar pergunta do formulário\n" +
+                    "5 - Pesquisar usuário por nome ou idade ou email\n");
+            selectMenu = sc.nextInt();
+
+            while(selectMenu > 5 || selectMenu < 1){
+                System.out.print("Item invalido, tente novamente: ");
+                selectMenu = sc.nextInt();
+            }
+
+            switch (selectMenu){
+                case 1:
+                    System.out.println("\nCadastrar novo usuario: ");
+                    Usuario user = form.cadastrarUsuario();
+                    System.out.println(user);
+                    form.novoFormulario(user);
+                    break;
+                case 2:
+                    form.lerCadastrados();
+                    break;
+                case 3:
+                    System.out.println("Teste3");
+                    break;
+                case 4:
+                    System.out.println("Teste3");
+                    break;
+                case 5:
+                    System.out.println("Teste3");
+                    break;
+            }
+
+            System.out.println("Deseja continuar? (S/N)");
+            sc.nextLine();
+            cont = sc.nextLine().toLowerCase();
+
+        } while (cont.equals("s"));
     }
 }

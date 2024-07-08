@@ -10,7 +10,7 @@ import entities.Usuario;
 public class Formulario {
 
     private List<String> perguntas;
-    private int idAtual = 1;
+    private Integer idAtual =1;
 
     public Formulario() {
 
@@ -30,10 +30,37 @@ public class Formulario {
             while (line != null){
                 System.out.println(line);
                 line = br.readLine();
+
             }
         }
         catch(IOException e){
             System.out.println("Erro: " + e.getMessage());
+        }
+    }
+
+    public void atualizarIdAtual(){
+        File pathFile = new File("C:\\Users\\marin\\Desafio - Sistema de Cadastro");
+        File[] cadastrados = pathFile.listFiles();
+        for (int i =0; i < cadastrados.length; i++){
+            File file = cadastrados[i];
+            if(Character.isDigit(file.getName().charAt(0))){
+                char primeiroChar = file.getName().charAt(0);
+                int valorId = Character.getNumericValue(primeiroChar);
+                idAtual = valorId + 1;
+            }
+        }
+
+    }
+
+    public void lerCadastrados(){
+
+        File pathFile = new File("C:\\Users\\marin\\Desafio - Sistema de Cadastro");
+        File[] cadastrados = pathFile.listFiles();
+        for (int i =0; i < cadastrados.length; i++){
+            File file = cadastrados[i];
+            if(file.isFile() && !file.getName().equals("formulario.txt") && file.getName().endsWith(".txt")){
+                System.out.println(file.getName().replaceAll(".txt", ""));
+            }
         }
     }
 
