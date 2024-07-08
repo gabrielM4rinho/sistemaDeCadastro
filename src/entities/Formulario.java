@@ -9,16 +9,16 @@ import entities.Usuario;
 
 public class Formulario {
 
-    private List<String> perguntas;
     private Integer idAtual =1;
+    private Integer idPergunta = 4;
+    private List<String> pergunta = new ArrayList<>();
 
     public Formulario() {
 
     }
 
-    public Formulario(int idAtual, List<String> perguntas) {
+    public Formulario(int idAtual) {
         this.idAtual = 1;
-        this.perguntas = new ArrayList<>();
     }
 
     protected String path = "C:\\Users\\marin\\Desafio - Sistema de Cadastro\\formulario.txt";
@@ -28,9 +28,54 @@ public class Formulario {
         try (BufferedReader br = new BufferedReader(new FileReader(path))){
             String line = br.readLine();
             while (line != null){
+                pergunta.add(line);
                 System.out.println(line);
                 line = br.readLine();
+            }
+        }
+        catch(IOException e){
+            System.out.println("Erro: " + e.getMessage());
+        }
+    }
 
+    public void adicionarPergunta(String novaPergunta){
+        atualizarIdPergunta();
+        pergunta.add(idPergunta + " - " + novaPergunta);
+        System.out.println("Pergunta adicionada!");
+    }
+
+    public void deletarPergunta(int indice){
+        if(indice - 1 < 4){
+            System.out.println("Não é possível deletar as 4 primeiras perguntas");
+        } else if(indice - 1 <= pergunta.size() - 1){
+            pergunta.remove(indice - 1);
+            System.out.println("Pergunta removida!");
+        } else{
+            System.out.println("Índice inválido");
+        }
+    }
+
+    public void salvarFormularioPerguntas() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
+            for (String perguntas : pergunta){
+                bw.write(perguntas);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+    }
+
+    public void atualizarIdPergunta(){
+        try (BufferedReader br = new BufferedReader(new FileReader(path))){
+            String line = br.readLine();
+            while (line != null){
+                if(Character.isDigit(line.charAt(0))){
+                    char primeiroChar = line.charAt(0);
+                    int valorId = Character.getNumericValue(primeiroChar);
+                    idPergunta = valorId + 1;
+                }
+                line = br.readLine();
             }
         }
         catch(IOException e){
@@ -49,7 +94,6 @@ public class Formulario {
                 idAtual = valorId + 1;
             }
         }
-
     }
 
     public void lerCadastrados(){
@@ -81,6 +125,8 @@ public class Formulario {
         double altura = scanner.nextDouble();
 
         path2 = "C:\\Users\\marin\\Desafio - Sistema de Cadastro\\" + idAtual + " - " + nome.replaceAll(" ", "").toUpperCase() + ".txt";
+
+        scanner.close();
 
         return new Usuario(nome, email, idade, altura);
     }

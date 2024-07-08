@@ -44,15 +44,25 @@ public class Program {
                     Usuario user = form.cadastrarUsuario();
                     System.out.println(user);
                     form.novoFormulario(user);
+                    sc.nextLine();
                     break;
                 case 2:
                     form.lerCadastrados();
+                    sc.nextLine();
                     break;
                 case 3:
-                    System.out.println("Teste3");
+                    System.out.println("Digite a pergunta");
+                    sc.nextLine();
+                    String novaPergunta = sc.nextLine();
+                    form.adicionarPergunta(novaPergunta);
+                    form.salvarFormularioPerguntas();
                     break;
                 case 4:
-                    System.out.println("Teste3");
+                    System.out.println("Digite o indice da pergunta que quer deletar: ");
+                    int indiceDeletar = sc.nextInt();
+                    form.deletarPergunta(indiceDeletar);
+                    form.salvarFormularioPerguntas();
+                    sc.nextLine();
                     break;
                 case 5:
                     System.out.println("Teste3");
@@ -60,7 +70,6 @@ public class Program {
             }
 
             System.out.println("Deseja continuar? (S/N)");
-            sc.nextLine();
             cont = sc.nextLine().toLowerCase();
 
         } while (cont.equals("s"));
