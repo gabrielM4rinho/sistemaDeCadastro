@@ -1,15 +1,13 @@
 package entities;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import entities.Usuario;
 
 public class Formulario {
 
-    private Integer idAtual =1;
+    private Integer idAtual = 1;
     private Integer idPergunta = 4;
     private List<String> pergunta = new ArrayList<>();
 
@@ -89,9 +87,22 @@ public class Formulario {
         for (int i =0; i < cadastrados.length; i++){
             File file = cadastrados[i];
             if(Character.isDigit(file.getName().charAt(0))){
-                char primeiroChar = file.getName().charAt(0);
+                String nomeArquivo = file.getName();
+                String[] partes = nomeArquivo.split(" ");
+                if(partes.length > 0){
+                    try{
+                        int valorId = Integer.parseInt(partes[0]);
+                        if(valorId >= idAtual){
+                            idAtual = valorId + 1;
+                        }
+                    }
+                    catch (NumberFormatException e){
+                        System.out.println("Erro: " + e.getMessage());
+                    }
+                }
+                /* char primeiroChar = file.getName().charAt(0);
                 int valorId = Character.getNumericValue(primeiroChar);
-                idAtual = valorId + 1;
+                idAtual = valorId + 1;*/
             }
         }
     }
@@ -99,13 +110,28 @@ public class Formulario {
     public void lerCadastrados(){
 
         File pathFile = new File("C:\\Users\\marin\\Desafio - Sistema de Cadastro");
-        File[] cadastrados = pathFile.listFiles();
+        File[] cadastrados = pathFile.listFiles((dir, name) -> name.endsWith(".txt") && !name.equals("formulario.txt"));
+
+        Arrays.sort(cadastrados, new Comparator<File>() {
+            @Override
+            public int compare(File o1, File o2) {
+                int id1 = Integer.parseInt(o1.getName().split(" ")[0]);
+                int id2 = Integer.parseInt(o2.getName().split(" ")[0]);
+                return Integer.compare(id1, id2);
+            }
+        });
+
+        for (File file : cadastrados){
+            System.out.println(file.getName().replaceAll(".txt", ""));
+        }
+
+        /*if(cadastrados)
         for (int i =0; i < cadastrados.length; i++){
             File file = cadastrados[i];
             if(file.isFile() && !file.getName().equals("formulario.txt") && file.getName().endsWith(".txt")){
                 System.out.println(file.getName().replaceAll(".txt", ""));
             }
-        }
+        } */
     }
 
     public Usuario cadastrarUsuario() {
@@ -125,8 +151,6 @@ public class Formulario {
         double altura = scanner.nextDouble();
 
         path2 = "C:\\Users\\marin\\Desafio - Sistema de Cadastro\\" + idAtual + " - " + nome.replaceAll(" ", "").toUpperCase() + ".txt";
-
-        scanner.close();
 
         return new Usuario(nome, email, idade, altura);
     }
