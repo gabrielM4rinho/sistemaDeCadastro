@@ -150,7 +150,7 @@ public class Formulario {
         System.out.print("Altura: ");
         double altura = scanner.nextDouble();
 
-        path2 = "C:\\Users\\marin\\Desafio - Sistema de Cadastro\\" + idAtual + " - " + nome.replaceAll(" ", "").toUpperCase() + ".txt";
+        path2 = "C:\\Users\\marin\\Desafio - Sistema de Cadastro\\" + idAtual + " - " + nome.toUpperCase() + ".txt";
 
         return new Usuario(nome, email, idade, altura);
     }
@@ -163,5 +163,45 @@ public class Formulario {
             System.out.println("Erro: " + e.getMessage());
         }
         idAtual++;
+    }
+
+    public void pesquisarUsuario(String termoBusca){
+        File pathFile = new File("C:\\Users\\marin\\Desafio - Sistema de Cadastro");
+        File[] cadastrados = pathFile.listFiles((dir, name) -> name.endsWith(".txt") && !name.equals("formulario.txt"));
+        List<File> encontrados = new ArrayList<>();
+
+        for(File file : cadastrados){
+            String nomeSemExtensao = file.getName().replaceAll(".txt", " ").split("-")[1].toLowerCase();
+            if(nomeSemExtensao.contains(termoBusca.toLowerCase())){
+                encontrados.add(file);
+            }
+        }
+
+        /*encontrados.sort(new Comparator<File>() {
+            @Override
+            public int compare(File o1, File o2) {
+                String nome1 = o1.getName().split("-")[1].toLowerCase();
+                String nome2 = o2.getName().split("-")[1].toLowerCase();
+                return nome1.compareTo(nome2);
+            }
+        });*/
+
+        encontrados.sort(new Comparator<File>() {
+            @Override
+            public int compare(File o1, File o2) {
+                int id1 = Integer.parseInt(o1.getName().split(" ")[0]);
+                int id2 = Integer.parseInt(o2.getName().split(" ")[0]);
+                return Integer.compare(id1, id2);
+            }
+        });
+
+        if(encontrados.isEmpty()){
+            System.out.println("Nenhum usuário encontrado com o termo: " + termoBusca);
+        } else{
+            System.out.println("Usuarios encontrados: ");
+            for(File file : encontrados){
+                System.out.println(file.getName().replaceAll(".txt", ""));
+            }
+        }
     }
 }

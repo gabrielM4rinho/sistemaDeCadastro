@@ -51,21 +51,24 @@ public class Program {
                     sc.nextLine();
                     break;
                 case 3:
-                    System.out.println("Digite a pergunta");
+                    System.out.print("Digite a pergunta: ");
                     sc.nextLine();
                     String novaPergunta = sc.nextLine();
                     form.adicionarPergunta(novaPergunta);
                     form.salvarFormularioPerguntas();
                     break;
                 case 4:
-                    System.out.println("Digite o indice da pergunta que quer deletar: ");
+                    System.out.print("Digite o indice da pergunta que quer deletar: ");
                     int indiceDeletar = sc.nextInt();
                     form.deletarPergunta(indiceDeletar);
                     form.salvarFormularioPerguntas();
                     sc.nextLine();
                     break;
                 case 5:
-                    System.out.println("Teste3");
+                    System.out.print("Digite o termo de busca: ");
+                    sc.nextLine();
+                    String termobusca = sc.nextLine();
+                    form.pesquisarUsuario(termobusca);
                     break;
             }
 
