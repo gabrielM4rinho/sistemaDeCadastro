@@ -2,6 +2,7 @@ package entities;
 
 import java.io.*;
 import java.util.*;
+import java.nio.file.Files;
 
 import entities.Usuario;
 
@@ -10,6 +11,8 @@ public class Formulario {
     private Integer idAtual = 1;
     private Integer idPergunta = 4;
     private List<String> pergunta = new ArrayList<>();
+    List<File> encontrados = new ArrayList<>();
+    String termoBusca;
 
     public Formulario() {
 
@@ -35,6 +38,7 @@ public class Formulario {
             System.out.println("Erro: " + e.getMessage());
         }
     }
+
 
     public void adicionarPergunta(String novaPergunta){
         atualizarIdPergunta();
@@ -166,25 +170,25 @@ public class Formulario {
     }
 
     public void pesquisarUsuario(String termoBusca){
+        this.termoBusca = termoBusca;
         File pathFile = new File("C:\\Users\\marin\\Desafio - Sistema de Cadastro");
         File[] cadastrados = pathFile.listFiles((dir, name) -> name.endsWith(".txt") && !name.equals("formulario.txt"));
-        List<File> encontrados = new ArrayList<>();
 
-        for(File file : cadastrados){
-            String nomeSemExtensao = file.getName().replaceAll(".txt", " ").split("-")[1].toLowerCase();
-            if(nomeSemExtensao.contains(termoBusca.toLowerCase())){
-                encontrados.add(file);
+        for (File file : cadastrados){
+            try{
+                String conteudoArquivo = new String(Files.readAllBytes(file.toPath())).toLowerCase();
+                String nomeSemExtensao = file.getName().replaceAll(".txt", " ").split("-")[1].toLowerCase();
+                if(nomeSemExtensao.contains(termoBusca.toLowerCase()) || conteudoArquivo.contains(termoBusca.toLowerCase())){
+                    encontrados.add(file);
+                }
+            }catch (IOException e){
+                System.out.println("Erro: " + e.getMessage());
             }
         }
 
-        /*encontrados.sort(new Comparator<File>() {
-            @Override
-            public int compare(File o1, File o2) {
-                String nome1 = o1.getName().split("-")[1].toLowerCase();
-                String nome2 = o2.getName().split("-")[1].toLowerCase();
-                return nome1.compareTo(nome2);
-            }
-        });*/
+    }
+
+    public void printUsuariosEncontrados(){
 
         encontrados.sort(new Comparator<File>() {
             @Override
@@ -201,6 +205,18 @@ public class Formulario {
             System.out.println("Usuarios encontrados: ");
             for(File file : encontrados){
                 System.out.println(file.getName().replaceAll(".txt", ""));
+                try (BufferedReader br = new BufferedReader(new FileReader(file))){
+                    String line = br.readLine();
+                    while (line != null){
+                        pergunta.add(line);
+                        System.out.println(line);
+                        line = br.readLine();
+                    }
+                }
+                catch(IOException e){
+                    System.out.println("Erro: " + e.getMessage());
+                }
+                System.out.println("\n =========\n");
             }
         }
     }

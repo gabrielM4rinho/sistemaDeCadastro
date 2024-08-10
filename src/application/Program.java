@@ -69,6 +69,8 @@ public class Program {
                     sc.nextLine();
                     String termobusca = sc.nextLine();
                     form.pesquisarUsuario(termobusca);
+                    form.printUsuariosEncontrados();
+                    //form.lerUsuarios();
                     break;
             }
 
