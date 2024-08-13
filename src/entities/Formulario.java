@@ -1,5 +1,6 @@
 package entities;
 
+import java.awt.image.ImagingOpException;
 import java.io.*;
 import java.util.*;
 import java.nio.file.Files;
@@ -13,6 +14,7 @@ public class Formulario {
     private List<String> pergunta = new ArrayList<>();
     List<File> encontrados = new ArrayList<>();
     String termoBusca;
+    private List<Usuario> usuarios = new ArrayList<>();
 
     public Formulario() {
 
@@ -141,22 +143,108 @@ public class Formulario {
     public Usuario cadastrarUsuario() {
 
         Scanner scanner = new Scanner(System.in);
+        String nome = null, email = null;
+        int idade = 0;
+        double altura = 0;
 
-        System.out.print("Nome: ");
-        String nome = scanner.nextLine();
+        while(true){
+            try{
+                System.out.print("Nome: ");
+                nome = scanner.nextLine();
+                ValidarCadastro.validarNome(nome);
+                break;
+            }
+            catch (ProgramException.NomeInvalidoException e){
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
 
-        System.out.print("E-mail: ");
-        String email = scanner.nextLine();
+        while (true) {
+            try {
+                System.out.print("Informe seu e-mail: ");
+                email = scanner.nextLine();
+                ValidarCadastro.validarEmail(email, usuarios);
+                break;
+            } catch (ProgramException.EmailInvalidoException | ProgramException.EmailDuplicadoException e) {
+                System.out.println("Erro: " + e.getMessage());
+            }
+        }
 
-        System.out.print("Idade: ");
-        int idade = scanner.nextInt();
+        while (true) {
+            try {
+                System.out.print("Informe sua idade: ");
+                idade = Integer.parseInt(scanner.nextLine());
+                ValidarCadastro.validarIdade(idade);
+                break;
+            } catch (ProgramException.IdadeInvalidaException e) {
+                System.out.println("Erro: " + e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println("Erro: A idade deve ser um número inteiro.");
+            }
+        }
 
-        System.out.print("Altura: ");
-        double altura = scanner.nextDouble();
+        while (true){
+            try {
+                System.out.print("Altura (Por gentileza, utilize o '.'): ");
+                altura = scanner.nextDouble();
+                break;
+            }
+            catch (InputMismatchException e){
+                System.out.println("Erro: Por favor, insira a altura no formato correto (exemplo: 1.75).");
+                scanner.nextLine();
+            }
+
+        }
 
         path2 = "C:\\Users\\marin\\Desafio - Sistema de Cadastro\\" + idAtual + " - " + nome.toUpperCase() + ".txt";
 
+        System.out.println("\nUSUARIO CADASTRADO!");
         return new Usuario(nome, email, idade, altura);
+
+        /*while(!sucesso){
+            try{
+                System.out.print("Nome: ");
+                String nome = scanner.nextLine();
+                ValidarCadastro.validarNome(nome);
+
+                System.out.print("E-mail: ");
+                String email = scanner.nextLine();
+                ValidarCadastro.validarEmail(email, usuarios);
+
+                System.out.print("Idade: ");
+                int idade = scanner.nextInt();
+                ValidarCadastro.validarIdade(idade);
+
+
+
+
+            }catch (ProgramException.NomeInvalidoException | ProgramException.EmailInvalidoException | ProgramException.IdadeInvalidaException |
+                    ProgramException.EmailDuplicadoException e){
+                System.out.println("Erro: " + e.getMessage());
+                System.out.println("Por favor, tente novamente\n");
+            }catch (InputMismatchException e){
+                System.out.println("Erro: " + e.getMessage());
+                System.out.println("Por favor, tente novamente\n");
+            }
+        }*/
+    }
+
+    public void carregarUsuariosCadastrados()throws IOException{
+        File pathFile = new File("C:\\Users\\marin\\Desafio - Sistema de Cadastro");
+        File[] cadastrados = pathFile.listFiles((dir, name) ->
+                name.endsWith(".txt") && !name.equals("formulario.txt"));
+        if(cadastrados!=null){
+            for(File file : cadastrados){
+                try(BufferedReader reader = new BufferedReader(new FileReader(file))){
+                    String nome = reader.readLine();
+                    String email = reader.readLine();
+                    int idade = Integer.parseInt(reader.readLine());
+                    double altura = Double.parseDouble(reader.readLine());
+
+                    usuarios.add(new Usuario(nome, email, idade, altura));
+                }
+            }
+        }
     }
 
     public void novoFormulario(Usuario usuario){
