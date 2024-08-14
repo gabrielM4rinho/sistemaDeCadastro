@@ -26,6 +26,4 @@ public class ValidarCadastro {
             throw new ProgramException.IdadeInvalidaException("O usuário deve ter mais de 18 anos.");
         }
     }
-
-
 }

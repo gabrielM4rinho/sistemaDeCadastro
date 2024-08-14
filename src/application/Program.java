@@ -3,13 +3,14 @@ package application;
 import entities.Formulario;
 import entities.Usuario;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
 public class Program {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         Scanner sc = new Scanner(System.in);
         Locale.setDefault(Locale.US);
@@ -43,6 +44,7 @@ public class Program {
                     System.out.println("\nCadastrar novo usuario: ");
                     Usuario user = form.cadastrarUsuario();
                     System.out.println(user);
+                    form.carregarUsuariosCadastrados();
                     form.novoFormulario(user);
                     sc.nextLine();
                     break;

@@ -15,7 +15,6 @@ public class Formulario {
     List<File> encontrados = new ArrayList<>();
     String termoBusca;
     private List<Usuario> usuarios = new ArrayList<>();
-
     public Formulario() {
 
     }
@@ -106,9 +105,6 @@ public class Formulario {
                         System.out.println("Erro: " + e.getMessage());
                     }
                 }
-                /* char primeiroChar = file.getName().charAt(0);
-                int valorId = Character.getNumericValue(primeiroChar);
-                idAtual = valorId + 1;*/
             }
         }
     }
@@ -130,14 +126,6 @@ public class Formulario {
         for (File file : cadastrados){
             System.out.println(file.getName().replaceAll(".txt", ""));
         }
-
-        /*if(cadastrados)
-        for (int i =0; i < cadastrados.length; i++){
-            File file = cadastrados[i];
-            if(file.isFile() && !file.getName().equals("formulario.txt") && file.getName().endsWith(".txt")){
-                System.out.println(file.getName().replaceAll(".txt", ""));
-            }
-        } */
     }
 
     public Usuario cadastrarUsuario() {
@@ -200,33 +188,6 @@ public class Formulario {
 
         System.out.println("\nUSUARIO CADASTRADO!");
         return new Usuario(nome, email, idade, altura);
-
-        /*while(!sucesso){
-            try{
-                System.out.print("Nome: ");
-                String nome = scanner.nextLine();
-                ValidarCadastro.validarNome(nome);
-
-                System.out.print("E-mail: ");
-                String email = scanner.nextLine();
-                ValidarCadastro.validarEmail(email, usuarios);
-
-                System.out.print("Idade: ");
-                int idade = scanner.nextInt();
-                ValidarCadastro.validarIdade(idade);
-
-
-
-
-            }catch (ProgramException.NomeInvalidoException | ProgramException.EmailInvalidoException | ProgramException.IdadeInvalidaException |
-                    ProgramException.EmailDuplicadoException e){
-                System.out.println("Erro: " + e.getMessage());
-                System.out.println("Por favor, tente novamente\n");
-            }catch (InputMismatchException e){
-                System.out.println("Erro: " + e.getMessage());
-                System.out.println("Por favor, tente novamente\n");
-            }
-        }*/
     }
 
     public void carregarUsuariosCadastrados()throws IOException{
